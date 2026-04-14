@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Nexxus Consultancy — Project gallery showcasing architectural design, structural engineering, and construction management across Guyana."/>
+<title>Gallery | Nexxus Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+/* ── Gallery Page ── */
+.gal-hero{position:relative;padding:160px 0 72px;background:var(--dark);overflow:hidden}
+.gal-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.015) 1px,transparent 1px);background-size:80px 80px}
+.gal-hero .container{position:relative;z-index:2}
+.gal-hero .stitle{color:#fff}
+.gal-hero .stitle span{color:var(--gold)}
+.gal-hero .ssub{color:var(--t2)}
+.gal-breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:.8rem;color:var(--t3)}
+.gal-breadcrumb a{color:rgba(255,255,255,.45);transition:color var(--tr)}
+.gal-breadcrumb a:hover{color:var(--gold)}
+.gal-breadcrumb svg{width:14px;height:14px}
+
+/* Filters */
+.gal-filters{padding:28px 0;border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100;background:rgba(10,10,11,.97);backdrop-filter:blur(16px)}
+.filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:8px 20px;border-radius:999px;font-family:var(--fh);font-weight:600;font-size:.76rem;letter-spacing:.5px;color:var(--t2);background:transparent;border:1px solid var(--border);cursor:pointer;transition:all var(--tr)}
+.filter-btn:hover{color:#fff;border-color:var(--border-l)}
+.filter-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.filter-count{font-size:.65rem;opacity:.6;margin-left:4px}
+
+/* Gallery Grid */
+.gal-section{padding:60px 0 40px}
+.gal-section-title{font-family:var(--fd);font-size:1.4rem;color:#fff;margin-bottom:8px}
+.gal-section-sub{font-size:.82rem;color:var(--t3);margin-bottom:28px}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+.gal-grid.wide{grid-template-columns:repeat(2,1fr)}
+.gal-grid-4{grid-template-columns:repeat(4,1fr)}
+.gal-item{position:relative;border-radius:var(--rl);overflow:hidden;cursor:pointer;border:1px solid var(--border);aspect-ratio:16/10;transition:all .35s ease}
+.gal-item.tall{aspect-ratio:10/13}
+.gal-item:hover{border-color:rgba(201,168,76,.2);transform:translateY(-3px);box-shadow:var(--shm)}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
+.gal-item:hover img{transform:scale(1.04)}
+.gal-item-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,11,.85) 0%,transparent 50%);opacity:0;transition:opacity .35s ease;padding:20px;display:flex;flex-direction:column;justify-content:flex-end}
+.gal-item:hover .gal-item-ov{opacity:1}
+.gal-item-ov h4{font-family:var(--fh);font-weight:700;font-size:.85rem;color:#fff;margin-bottom:3px}
+.gal-item-ov span{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.gal-cat-badge{position:absolute;top:12px;left:12px;background:rgba(10,10,11,.55);backdrop-filter:blur(8px);border:1px solid var(--border-l);color:var(--gold);font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:999px;opacity:0;transition:opacity .3s ease}
+.gal-item:hover .gal-cat-badge{opacity:1}
+
+/* Section dividers */
+.gal-divider{border:none;border-top:1px solid var(--border);margin:0}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:9999;background:rgba(6,6,8,.95);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:40px}
+.lb.active{display:flex}
+.lb img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:8px}
+.lb-close{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border-l);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.lb-close:hover{background:rgba(255,255,255,.12)}
+.lb-close svg{width:22px;height:22px}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border-l);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.lb-nav:hover{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.3)}
+.lb-nav svg{width:24px;height:24px}
+.lb-prev{left:24px}
+.lb-next{right:24px}
+.lb-info{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);text-align:center}
+.lb-info h4{font-family:var(--fh);font-weight:700;font-size:.9rem;color:#fff;margin-bottom:4px}
+.lb-info span{font-size:.72rem;color:var(--gold);font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+.lb-counter{font-size:.7rem;color:var(--t3);margin-top:6px;display:block}
+
+/* CTA */
+.gal-cta{padding:80px 0;border-top:1px solid var(--border);text-align:center}
+.gal-cta h2{font-family:var(--fd);font-size:clamp(1.5rem,3vw,2.2rem);color:#fff;margin-bottom:12px}
+.gal-cta h2 span{color:var(--gold)}
+.gal-cta p{color:var(--t2);max-width:480px;margin:0 auto 32px}
+.gal-cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* Footer compact */
+.gal-footer{border-top:1px solid var(--border);padding:22px 0}
+.gal-footer .fbot{padding:0;border:none}
+
+@media(max-width:1024px){.gal-grid{grid-template-columns:repeat(2,1fr)}.gal-grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .gal-grid,.gal-grid-4{grid-template-columns:1fr}
+  .gal-hero{padding:130px 0 56px}
+  .filter-row{gap:6px}
+  .filter-btn{padding:6px 14px;font-size:.72rem}
+  .gal-item.tall{aspect-ratio:16/10}
+}
+</style>
+</head>
+<body>
+
+<!-- WA Float -->
+<a href="https://wa.me/592XXXXXXX?text=Hello%20Nexxus%20Consultancy%2C%20I%20would%20like%20to%20discuss%20a%20project." class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.534 5.86L.054 23.25a.75.75 0 00.916.916l5.39-1.48A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.693-.5-5.24-1.377l-.374-.217-3.876 1.065 1.065-3.876-.217-.374A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg><span class="wa-tip">Chat on WhatsApp</span></a>
+
+<a href="#" class="back-top" id="backTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg></a>
+
+<!-- Navbar -->
+<nav class="navbar scrolled" id="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-mark">NX</span><span class="logo-text">Nexxus</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="index.html#services" class="nav-link">Services</a></li>
+      <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+      <li><a href="index.html#contact" class="nav-link btn-nav">Get Started</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="gal-hero">
+  <div class="container">
+    <div class="gal-breadcrumb"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg><span>Gallery</span></div>
+    <div class="sh" style="text-align:left;margin-bottom:0">
+      <div class="stag">Portfolio</div>
+      <h2 class="stitle">Project <span>Gallery</span></h2>
+      <p class="ssub" style="margin:0">A showcase of our work across architectural design, structural engineering, and construction management.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Filters -->
+<div class="gal-filters" id="galFilters">
+  <div class="container">
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">All Projects<span class="filter-count">(41)</span></button>
+      <button class="filter-btn" data-filter="arch">Architectural Design<span class="filter-count">(13)</span></button>
+      <button class="filter-btn" data-filter="struct">Structural Engineering<span class="filter-count">(13)</span></button>
+      <button class="filter-btn" data-filter="cm">Construction Management<span class="filter-count">(14)</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ARCHITECTURAL DESIGN -->
+<!-- ═══════════════════════════════════════ -->
+<section class="gal-section" data-category="arch" id="sec-arch">
+  <div class="container">
+    <div class="gal-section-title">Architectural Design</div>
+    <div class="gal-section-sub">Renders, 3D visualisations, and completed architectural design projects</div>
+
+    <!-- 2-Storey Modern Residence -->
+    <div class="gal-grid">
+      <div class="gal-item" data-src="images/render-front-1.jpg" data-title="2-Storey Residence — Front Elevation" data-cat="Architectural Design"><img src="images/render-front-1.jpg" alt=""/><div class="gal-item-ov"><span>Architectural</span><h4>2-Storey Residence — Front</h4></div><div class="gal-cat-badge">Architectural</div></div>
+      <div class="gal-item" data-src="images/render-front-2.jpg" data-title="2-Storey Residence — Side Angle" data-cat="Architectural Design"><img src="images/render-front-2.jpg" alt=""/><div class="gal-item-ov"><span>Architectural</span><h4>2-Storey Residence — Side</h4></div><div class="gal-cat-badge">Architectural</div></div>
+      <div class="gal-item" data-src="images/render-front-3.jpg" data-title="2-Storey Residence — Full Perspective" data-cat="Architectural Design"><img src="images/render-front-3.jpg" alt=""/><div class="gal-item-ov"><span>Architectural</span><h4>2-Storey Residence — Perspective</h4></div><div class="gal-cat-badge">Architectural</div></div>
+      <div class="gal-item" data-src="images/render-rear-1.jpg" data-title="2-Storey Residence — Rear West" data-cat="Architectural Design"><img src="images/render-rear-1.jpg" alt=""/><div class="gal-item-ov"><span>Architectural</span><h4>2-Storey Residence — Rear</h4></div><div class="gal-cat-badge">Architectural</div></div>
+      <div class="gal-item" data-src="images/render-rear-2.jpg" data-title="2-Storey Residence — Rear South" data-cat="Architectural Design"><img src="images/render-rear-2.jpg" alt=""/><div class="gal-item-ov"><span>Architectural</span><h4>2-Storey Residence — Rear SW</h4></div><div class="gal-cat-badge">Architectural</div></div>
+      <div class="gal-item" data-src="images/render-interior-living.jpg" data-title="Interior — Open-Plan Living & Dining" data-cat="Architectural Design"><img src="images/render-interior-living.jpg" alt=""/><div class="gal-item-ov"><span>Interior</span><h4>Open-Plan Living &amp; Dining</h4></div><div class="gal-cat-badge">Interior</div></div>
+      <div class="gal-item" data-src="images/render-interior-bedroom.jpg" data-title="Interior — Master Bedroom" data-cat="Architectural Design"><img src="images/render-interior-bedroom.jpg" alt=""/><div class="gal-item-ov"><span>Interior</span><h4>Master Bedroom Suite</h4></div><div class="gal-cat-badge">Interior</div></div>
+      <div class="gal-item" data-src="images/render-interior-bathroom.jpg" data-title="Interior — Modern Bathroom" data-cat="Architectural Design"><img src="images/render-interior-bathroom.jpg" alt=""/><div class="gal-item-ov"><span>Interior</span><h4>Walk-In Shower Bathroom</h4></div><div class="gal-cat-badge">Interior</div></div>
+    </div>
+
+    <!-- 3-Storey Apartment -->
+    <div class="gal-grid">
+      <div class="gal-item" data-src="images/arch-3story-apt-1.jpg" data-title="3-Storey Apartment — Elevation 1" data-cat="Architectural Design"><img src="images/arch-3story-apt-1.jpg" alt=""/><div class="gal-item-ov"><span>Apartment</span><h4>3-Storey Apartment Block</h4></div><div class="gal-cat-badge">Apartment</div></div>
+      <div class="gal-item" data-src="images/arch-3story-apt-2.jpg" data-title="3-Storey Apartment — Elevation 2" data-cat="Architectural Design"><img src="images/arch-3story-apt-2.jpg" alt=""/><div class="gal-item-ov"><span>Apartment</span><h4>3-Storey Apartment — Alt View</h4></div><div class="gal-cat-badge">Apartment</div></div>
+      <div class="gal-item" data-src="images/arch-3story-apt-3.jpg" data-title="3-Storey Apartment — Elevation 3" data-cat="Architectural Design"><img src="images/arch-3story-apt-3.jpg" alt=""/><div class="gal-item-ov"><span>Apartment</span><h4>3-Storey Apartment — Detail</h4></div><div class="gal-cat-badge">Apartment</div></div>
+    </div>
+
+    <!-- Roof Garden Residence -->
+    <div class="gal-grid">
+    </div>
+
+    <!-- 2-Storey Residential PDF renders -->
+    <div class="gal-grid">
+      <div class="gal-item" data-src="images/arch-2story-1.jpg" data-title="2-Storey Residential — Sheet 1" data-cat="Architectural Design"><img src="images/arch-2story-1.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>2-Storey Residential Plans</h4></div><div class="gal-cat-badge">Plans</div></div>
+      <div class="gal-item" data-src="images/arch-2story-2.jpg" data-title="2-Storey Residential — Sheet 2" data-cat="Architectural Design"><img src="images/arch-2story-2.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>2-Storey — Elevations</h4></div><div class="gal-cat-badge">Plans</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="gal-divider"/>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STRUCTURAL ENGINEERING -->
+<!-- ═══════════════════════════════════════ -->
+<section class="gal-section" data-category="struct" id="sec-struct">
+  <div class="container">
+    <div class="gal-section-title">Structural Engineering</div>
+    <div class="gal-section-sub">Structural models, analysis outputs, steel connections, and engineering drawings</div>
+
+    <div class="gal-grid">
+      <div class="gal-item" data-src="images/struct-2story-rc-res.jpg" data-title="2-Storey R.C. Residential Structure" data-cat="Structural"><img src="images/struct-2story-rc-res.jpg" alt=""/><div class="gal-item-ov"><span>Structural</span><h4>2-Storey R.C. Residential</h4></div><div class="gal-cat-badge">R.C. Design</div></div>
+      <div class="gal-item" data-src="images/struct-2story-rc.jpg" data-title="2-Storey R.C. Structure" data-cat="Structural"><img src="images/struct-2story-rc.jpg" alt=""/><div class="gal-item-ov"><span>Structural</span><h4>2-Storey R.C. Structure</h4></div><div class="gal-cat-badge">R.C. Design</div></div>
+      <div class="gal-item" data-src="images/struct-steel-retrofit.jpg" data-title="2-Storey Steel Retrofit Residential" data-cat="Structural"><img src="images/struct-steel-retrofit.jpg" alt=""/><div class="gal-item-ov"><span>Retrofit</span><h4>Steel Retrofit Residential</h4></div><div class="gal-cat-badge">Retrofit</div></div>
+      <div class="gal-item" data-src="images/struct-3story-rc-apt.jpg" data-title="3-Storey R.C. Apartment" data-cat="Structural"><img src="images/struct-3story-rc-apt.jpg" alt=""/><div class="gal-item-ov"><span>Structural</span><h4>3-Storey R.C. Apartment</h4></div><div class="gal-cat-badge">R.C. Design</div></div>
+      <div class="gal-item" data-src="images/struct-3story-rc-comm.jpg" data-title="3-Storey R.C. Commercial Building" data-cat="Structural"><img src="images/struct-3story-rc-comm.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>3-Storey R.C. Commercial</h4></div><div class="gal-cat-badge">Commercial</div></div>
+      <div class="gal-item" data-src="images/struct-3story-rc-timber.jpg" data-title="3-Storey R.C. & Timber Commercial" data-cat="Structural"><img src="images/struct-3story-rc-timber.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>R.C. &amp; Timber Commercial</h4></div><div class="gal-cat-badge">Hybrid</div></div>
+      <div class="gal-item" data-src="images/struct-3story-steel-pile.jpg" data-title="3-Storey Steel Commercial with Pile Foundation" data-cat="Structural"><img src="images/struct-3story-steel-pile.jpg" alt=""/><div class="gal-item-ov"><span>Steel</span><h4>Steel Frame + Pile Foundation</h4></div><div class="gal-cat-badge">Steel</div></div>
+      <div class="gal-item" data-src="images/struct-4story-bond.jpg" data-title="4-Storey R.C. Bond Building" data-cat="Structural"><img src="images/struct-4story-bond.jpg" alt=""/><div class="gal-item-ov"><span>Industrial</span><h4>4-Storey R.C. Bond</h4></div><div class="gal-cat-badge">Industrial</div></div>
+      <div class="gal-item" data-src="images/struct-warehouse.jpg" data-title="Floated Steel Warehouse" data-cat="Structural"><img src="images/struct-warehouse.jpg" alt=""/><div class="gal-item-ov"><span>Industrial</span><h4>Steel Warehouse</h4></div><div class="gal-cat-badge">Industrial</div></div>
+    </div>
+
+    <!-- Detail drawings -->
+    <div class="gal-grid gal-grid-4">
+      <div class="gal-item" data-src="images/struct-bridge.jpg" data-title="Bridge Design Report" data-cat="Structural"><img src="images/struct-bridge.jpg" alt=""/><div class="gal-item-ov"><span>Infrastructure</span><h4>Bridge Design</h4></div><div class="gal-cat-badge">Bridge</div></div>
+      <div class="gal-item" data-src="images/struct-pilecap.jpg" data-title="General Pilecap Detail" data-cat="Structural"><img src="images/struct-pilecap.jpg" alt=""/><div class="gal-item-ov"><span>Detail</span><h4>Pilecap Detail</h4></div><div class="gal-cat-badge">Detail</div></div>
+      <div class="gal-item" data-src="images/struct-steel-connections.jpg" data-title="Steel Connection Details" data-cat="Structural"><img src="images/struct-steel-connections.jpg" alt=""/><div class="gal-item-ov"><span>Detail</span><h4>Steel Connections</h4></div><div class="gal-cat-badge">Detail</div></div>
+      <div class="gal-item" data-src="images/struct-gradebeam.jpg" data-title="Grade Beam & Retaining Wall" data-cat="Structural"><img src="images/struct-gradebeam.jpg" alt=""/><div class="gal-item-ov"><span>Detail</span><h4>Grade Beam &amp; Retaining Wall</h4></div><div class="gal-cat-badge">Detail</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="gal-divider"/>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONSTRUCTION MANAGEMENT -->
+<!-- ═══════════════════════════════════════ -->
+<section class="gal-section" data-category="cm" id="sec-cm">
+  <div class="container">
+    <div class="gal-section-title">Construction Management</div>
+    <div class="gal-section-sub">On-site supervision, QA/QC, and project management across active construction sites</div>
+
+    <div class="gal-grid">
+      <!-- 2-Storey House -->
+      <div class="gal-item" data-src="images/cm-2story-1.jpg" data-title="2-Storey House — Construction Phase" data-cat="Construction"><img src="images/cm-2story-1.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>2-Storey House — In Progress</h4></div><div class="gal-cat-badge">Residential</div></div>
+      <div class="gal-item" data-src="images/cm-2story-2.jpg" data-title="2-Storey House — Framing" data-cat="Construction"><img src="images/cm-2story-2.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>2-Storey House — Framing</h4></div><div class="gal-cat-badge">Residential</div></div>
+      <div class="gal-item" data-src="images/cm-2story-3.jpg" data-title="2-Storey House — Structure" data-cat="Construction"><img src="images/cm-2story-3.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>2-Storey House — Structure</h4></div><div class="gal-cat-badge">Residential</div></div>
+      <!-- LBI Bond -->
+      <div class="gal-item" data-src="images/cm-lbi-bond-1.jpg" data-title="LBI Bond — Construction" data-cat="Construction"><img src="images/cm-lbi-bond-1.jpg" alt=""/><div class="gal-item-ov"><span>Industrial</span><h4>LBI Bond — Construction</h4></div><div class="gal-cat-badge">Industrial</div></div>
+      <div class="gal-item" data-src="images/cm-lbi-bond-2.jpg" data-title="LBI Bond — Steel Erection" data-cat="Construction"><img src="images/cm-lbi-bond-2.jpg" alt=""/><div class="gal-item-ov"><span>Industrial</span><h4>LBI Bond — Steel Erection</h4></div><div class="gal-cat-badge">Industrial</div></div>
+      <div class="gal-item" data-src="images/cm-lbi-bond-3.jpg" data-title="LBI Bond — Progress" data-cat="Construction"><img src="images/cm-lbi-bond-3.jpg" alt=""/><div class="gal-item-ov"><span>Industrial</span><h4>LBI Bond — Progress</h4></div><div class="gal-cat-badge">Industrial</div></div>
+      <!-- Kitty Building -->
+      <div class="gal-item" data-src="images/cm-kitty-1.jpg" data-title="Multi-Storey, Kitty — Overview" data-cat="Construction"><img src="images/cm-kitty-1.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>Multi-Storey, Kitty</h4></div><div class="gal-cat-badge">Commercial</div></div>
+      <div class="gal-item" data-src="images/cm-kitty-2.jpg" data-title="Multi-Storey, Kitty — Structure" data-cat="Construction"><img src="images/cm-kitty-2.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>Kitty — Structure Phase</h4></div><div class="gal-cat-badge">Commercial</div></div>
+      <div class="gal-item" data-src="images/cm-kitty-3.jpg" data-title="Multi-Storey, Kitty — Upper Floors" data-cat="Construction"><img src="images/cm-kitty-3.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>Kitty — Upper Floors</h4></div><div class="gal-cat-badge">Commercial</div></div>
+      <div class="gal-item" data-src="images/cm-foundation-1.jpg" data-title="Residential Foundation — Site Works" data-cat="Construction"><img src="images/cm-foundation-1.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>Foundation — Site Works</h4></div><div class="gal-cat-badge">Foundation</div></div>
+      <div class="gal-item" data-src="images/cm-foundation-2.jpg" data-title="Residential Foundation — Block Layout" data-cat="Construction"><img src="images/cm-foundation-2.jpg" alt=""/><div class="gal-item-ov"><span>Residential</span><h4>Foundation — Block Layout</h4></div><div class="gal-cat-badge">Foundation</div></div>
+      <div class="gal-item" data-src="images/cm-rc-interior-1.jpg" data-title="R.C. Frame — Interior Structure" data-cat="Construction"><img src="images/cm-rc-interior-1.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>R.C. Frame Interior</h4></div><div class="gal-cat-badge">R.C. Frame</div></div>
+      <div class="gal-item" data-src="images/cm-formwork-columns-1.jpg" data-title="Column Formwork — Upper Floor" data-cat="Construction"><img src="images/cm-formwork-columns-1.jpg" alt=""/><div class="gal-item-ov"><span>Commercial</span><h4>Column Formwork</h4></div><div class="gal-cat-badge">Formwork</div></div>
+      <div class="gal-item" data-src="images/cm-rebar-detail-1.jpg" data-title="Reinforcement Detail — Beam Cage" data-cat="Construction"><img src="images/cm-rebar-detail-1.jpg" alt=""/><div class="gal-item-ov"><span>Detail</span><h4>Rebar — Beam Cage</h4></div><div class="gal-cat-badge">Rebar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="gal-cta">
+  <div class="container">
+    <h2>Ready to Start Your <span>Project?</span></h2>
+    <p>Discuss your architectural, engineering, or construction needs with our team today.</p>
+    <div class="gal-cta-btns">
+      <a href="index.html#contact" class="btn btn-gold"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Get Started Today</a>
+      <a href="https://wa.me/592XXXXXXX?text=Hello%20Nexxus%20Consultancy%2C%20I%20would%20like%20to%20discuss%20a%20project." class="btn btn-wa" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg> WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="gal-footer">
+  <div class="container">
+    <div class="fbot"><p>&copy; 2026 Nexxus Consultancy. All Rights Reserved.</p><p>Built by <strong>Micro Strategy</strong> &mdash; <strong>Evolve Enterprise</strong></p></div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <button class="lb-close" id="lbClose"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+  <button class="lb-nav lb-prev" id="lbPrev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+  <button class="lb-nav lb-next" id="lbNext"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+  <img id="lbImg" src="" alt=""/>
+  <div class="lb-info"><h4 id="lbTitle"></h4><span id="lbCat"></span><span class="lb-counter" id="lbCounter"></span></div>
+</div>
+
+<script>
+(function(){
+  /* Nav */
+  var bt=document.getElementById('backTop');
+  window.addEventListener('scroll',function(){bt.classList.toggle('vis',window.scrollY>400);});
+  var hb=document.getElementById('hamburger'),nl=document.getElementById('navLinks');
+  hb.addEventListener('click',function(){var o=nl.classList.toggle('open');hb.classList.toggle('open',o);});
+  document.addEventListener('click',function(e){if(nl.classList.contains('open')&&!nl.contains(e.target)&&!hb.contains(e.target)){nl.classList.remove('open');hb.classList.remove('open');}});
+
+  /* Filters */
+  var filterBtns=document.querySelectorAll('.filter-btn');
+  var sections=document.querySelectorAll('.gal-section');
+  var dividers=document.querySelectorAll('.gal-divider');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      filterBtns.forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      var f=btn.getAttribute('data-filter');
+      sections.forEach(function(s){
+        if(f==='all'||s.getAttribute('data-category')===f){s.style.display='';} else {s.style.display='none';}
+      });
+      dividers.forEach(function(d){d.style.display=f==='all'?'':'none';});
+      // Rebuild lightbox items for current filter
+      buildLightbox(f);
+    });
+  });
+
+  /* Lightbox */
+  var lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg');
+  var lbTitle=document.getElementById('lbTitle'),lbCat=document.getElementById('lbCat'),lbCounter=document.getElementById('lbCounter');
+  var items=[],ci=0;
+
+  function buildLightbox(filter){
+    items=[];
+    document.querySelectorAll('.gal-item[data-src]').forEach(function(el){
+      var sec=el.closest('.gal-section');
+      if(filter==='all'||sec.getAttribute('data-category')===filter){
+        items.push({src:el.getAttribute('data-src'),title:el.getAttribute('data-title'),cat:el.getAttribute('data-cat'),el:el});
+      }
+    });
+    // Re-bind clicks
+    items.forEach(function(item,i){
+      item.el.onclick=function(){show(i);};
+    });
+  }
+
+  function show(i){ci=i;lbImg.src=items[i].src;lbTitle.textContent=items[i].title;lbCat.textContent=items[i].cat;lbCounter.textContent=(i+1)+' / '+items.length;lb.classList.add('active');document.body.style.overflow='hidden';}
+  function hide(){lb.classList.remove('active');document.body.style.overflow='';}
+  document.getElementById('lbClose').addEventListener('click',hide);
+  document.getElementById('lbPrev').addEventListener('click',function(){show((ci-1+items.length)%items.length);});
+  document.getElementById('lbNext').addEventListener('click',function(){show((ci+1)%items.length);});
+  lb.addEventListener('click',function(e){if(e.target===lb)hide();});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('active'))return;if(e.key==='Escape')hide();if(e.key==='ArrowLeft')show((ci-1+items.length)%items.length);if(e.key==='ArrowRight')show((ci+1)%items.length);});
+
+  buildLightbox('all');
+})();
+</script>
+</body>
+</html>

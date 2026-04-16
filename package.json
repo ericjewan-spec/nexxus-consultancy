@@ -1,0 +1,15 @@
+{
+  "name": "nexxus-consultancy",
+  "version": "1.0.0",
+  "description": "Nexxus Consultancy - Engineering Excellence. Strategic Certainty.",
+  "scripts": {
+    "build": "echo 'Static site - no build required'",
+    "dev": "python3 -m http.server 3000 || python -m SimpleHTTPServer 3000"
+  },
+  "keywords": ["engineering", "consultancy", "architecture"],
+  "author": "Nexxus Consultancy",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1"
+  }
+}

@@ -195,5 +195,6 @@
 <script>
 (function(){var bt=document.getElementById('backTop');window.addEventListener('scroll',function(){bt.classList.toggle('vis',window.scrollY>400);});var hb=document.getElementById('hamburger'),nl=document.getElementById('navLinks');hb.addEventListener('click',function(){var o=nl.classList.toggle('open');hb.classList.toggle('open',o);});document.addEventListener('click',function(e){if(nl.classList.contains('open')&&!nl.contains(e.target)&&!hb.contains(e.target)){nl.classList.remove('open');hb.classList.remove('open');}});var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');ro.unobserve(e.target);}});},{threshold:0.08});document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});})();
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
